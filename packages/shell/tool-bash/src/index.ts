@@ -62,12 +62,12 @@ function isValidJSON(str: unknown): boolean {
 function validateBashArgs(args: BashToolArgs): void {
   if (args.command.trim().length === 0) {
     throw new Error('invalid command: expected a non-empty string')
-  }else if(isValidJSON(args.command.trim())){
+  }else if(!isValidJSON(args.command.trim())){
     args.command = JSON.stringify(args.command.trim())
   }
   if (args.description.trim().length === 0) {
     throw new Error('invalid description: expected a non-empty string')
-  }else if(isValidJSON(args.description.trim())){
+  }else if(!isValidJSON(args.description.trim())){
     args.description = JSON.stringify(args.description.trim())
   }
   if (args.timeoutMs !== undefined && (!Number.isFinite(args.timeoutMs) || args.timeoutMs <= 0)) {
