@@ -475,6 +475,12 @@
         fetch: true
         searchTimeoutMs: 60000
 
+    # This optional Agent Tool reads EVOLINK_API_KEY from the launch environment.
+    # It remains listed in Settings while disabled and is enabled through Plugins.
+    - id: tool-evolink-image
+      name: '@deepseek-ai/dsh-tool-evolink-image'
+      disabled: true
+
     - id: mcp-resources
       name: '@deepseek-ai/dsh-mcp-resources'
 

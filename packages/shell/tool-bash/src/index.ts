@@ -42,21 +42,33 @@ export const Config: z<Config> = z.object({
 
 /** Parsed tool args; execute validates value constraints absent from ParameterSchemaSpec. */
 interface BashToolArgs {
-  command: string
-  description: string
-  timeoutMs?: number
-  workdir?: string
-  run_in_background?: boolean
-  sandbox_permissions?: string
-  justification?: string
+  'command': string
+  'description': string
+  'timeoutMs'?: number
+  'workdir'?: string
+  'run_in_background'?: boolean
+  'sandbox_permissions'?: string
+  'justification'?: string
 }
-
+function isValidJSON(str: unknown): boolean {
+  if (typeof str !== 'string' || str.trim() === '') return false
+  try {
+    JSON.parse(str)
+    return true
+  } catch {
+    return false
+  }
+}
 function validateBashArgs(args: BashToolArgs): void {
   if (args.command.trim().length === 0) {
     throw new Error('invalid command: expected a non-empty string')
+  }else if(isValidJSON(args.command.trim())){
+    args.command = JSON.stringify(args.command.trim())
   }
   if (args.description.trim().length === 0) {
     throw new Error('invalid description: expected a non-empty string')
+  }else if(isValidJSON(args.description.trim())){
+    args.description = JSON.stringify(args.description.trim())
   }
   if (args.timeoutMs !== undefined && (!Number.isFinite(args.timeoutMs) || args.timeoutMs <= 0)) {
     throw new Error(`invalid timeoutMs: expected a positive number, got ${JSON.stringify(args.timeoutMs)}`)
@@ -96,7 +108,7 @@ function bashDescription(backgroundEnabled: boolean, escalationModes: readonly S
  * The command remains the title on both paths; foreground cwd is passed through
  * for the bridge to resolve, while background descriptions remain card content.
  */
-type BashCallArgs = { command: string; description: string; workdir?: string; run_in_background?: boolean }
+type BashCallArgs = { 'command': string; 'description': string; 'workdir'?: string; 'run_in_background'?: boolean }
 
 function presentBashCall(args: BashCallArgs): GenericCallView | TerminalCallView {
   if (args.run_in_background === true) {

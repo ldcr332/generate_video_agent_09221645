@@ -479,6 +479,7 @@
       "@deepseek-ai/dsh-tool-todo": ["./packages/todo/tool-todo/src"],
       "@deepseek-ai/dsh-tool-todo/invariant": ["./packages/todo/tool-todo/src/invariant.ts"],
       "@deepseek-ai/dsh-tool-web": ["./packages/web/tool-web/src"],
+      "@deepseek-ai/dsh-tool-evolink-image": ["./packages/web/tool-evolink-image/src"],
       "@deepseek-ai/dsh-tool-workflow": ["./packages/workflow/tool-workflow/src"],
       "@deepseek-ai/dsh-tool-workflow/invariant": ["./packages/workflow/tool-workflow/src/invariant.ts"],
       "@deepseek-ai/dsh-tools": ["./packages/core/tools/src"],

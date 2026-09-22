@@ -107,8 +107,8 @@ export async function withDefaultWeb(test: TestContext, inspect: (app: DefaultWe
       test.signal.throwIfAborted()
       if (exited || !child.connected) throw new Error(`Web is not connected during ${command}`)
       const reply = Promise.withResolvers<RuntimeRoster>()
-      pending.set(command, reply)
-      void send(command).catch((error: unknown) => {
+      pending.set(JSON.stringify(command), reply)
+      void send(JSON.stringify(command)).catch((error: unknown) => {
         if (pending.get(command) !== reply) return
         pending.delete(command)
         reply.reject(error)
