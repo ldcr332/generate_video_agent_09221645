@@ -1,0 +1,235 @@
+/* Editor surface: one time ruler over three aligned tracks on a shared axis. */
+
+/* Shares the center column equally with the preview: the studio's lower half. */
+.timeline {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--dsw-alias-border-l1);
+  background: var(--dsw-alias-bg-layer-1);
+}
+
+.toolbar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 40px;
+  padding: 0 12px;
+  border-bottom: 1px solid var(--dsw-alias-border-l1);
+}
+
+.clock {
+  font-family: var(--dsw-font-mono, monospace);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: var(--dsw-alias-label-secondary);
+}
+
+.zoom {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px;
+  border-radius: 8px;
+  background: var(--dsw-alias-bg-layer-3);
+}
+
+.zoomButton {
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--dsw-alias-label-secondary);
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.zoomButton:hover {
+  background: var(--dsw-alias-interactive-bg-hover);
+  color: var(--dsw-alias-label-primary);
+}
+
+.scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: flex;
+  align-items: stretch;
+}
+
+.gutter {
+  flex: none;
+  width: 72px;
+  display: flex;
+  align-items: center;
+  padding-left: 12px;
+  border-right: 1px solid var(--dsw-alias-border-l1);
+  background: var(--dsw-alias-bg-layer-1);
+}
+
+.trackLabel {
+  font-size: 11px;
+  color: var(--dsw-alias-label-tertiary);
+  white-space: nowrap;
+}
+
+.ruler {
+  position: relative;
+  height: 26px;
+  border-bottom: 1px solid var(--dsw-alias-border-l1);
+  background: var(--dsw-alias-bg-layer-2);
+  cursor: col-resize;
+  touch-action: none;
+}
+
+.tick {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 0;
+}
+
+.tickLine {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 1px;
+  height: 6px;
+  background: var(--dsw-alias-border-l2);
+}
+
+.tickLabel {
+  position: absolute;
+  left: 4px;
+  top: 4px;
+  font-family: var(--dsw-font-mono, monospace);
+  font-size: 10px;
+  font-style: normal;
+  color: var(--dsw-alias-label-dimmed);
+  white-space: nowrap;
+}
+
+.lane {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  height: 52px;
+  border-bottom: 1px solid var(--dsw-alias-border-l1);
+}
+
+.segment {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  display: flex;
+  padding: 0;
+  border: 1px solid var(--dsw-alias-border-l1);
+  border-radius: 6px;
+  background: var(--dsw-alias-bg-layer-2);
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.segment:hover {
+  border-color: var(--dsw-alias-border-l2);
+  background: var(--dsw-alias-interactive-bg-hover);
+}
+
+.segmentSelected {
+  border-color: var(--dsw-alias-brand-primary);
+  box-shadow: inset 0 0 0 1px var(--dsw-alias-brand-primary);
+}
+
+.thumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.subtitleText {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  padding: 5px 7px;
+  font-size: 11px;
+  line-height: 1.35;
+  color: var(--dsw-alias-label-secondary);
+  overflow: hidden;
+}
+
+.placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 0 6px;
+  font-size: 10px;
+  color: var(--dsw-alias-label-dimmed);
+  text-align: center;
+  overflow: hidden;
+}
+
+.wave {
+  width: 100%;
+  height: 100%;
+  display: block;
+  color: var(--dsw-alias-state-business-primary);
+}
+
+.wave polyline {
+  stroke: currentColor;
+}
+
+.waveLoading,
+.waveEmpty {
+  display: block;
+  width: 100%;
+  height: 2px;
+  margin: auto 0;
+  border-radius: 2px;
+  background: var(--dsw-alias-border-l2);
+  opacity: 0.5;
+}
+
+.playhead {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  margin-left: -0.5px;
+  background: var(--dsw-alias-state-error-primary);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.playheadHandle {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 9px;
+  height: 9px;
+  margin-left: -4.5px;
+  border-radius: 2px;
+  background: var(--dsw-alias-state-error-primary);
+}

@@ -3050,6 +3050,32 @@ export interface Config {
 
 Source: [`packages/shell/tool-bash-persistent/src/index.ts:435`](../packages/shell/tool-bash-persistent/src/index.ts)
 
+<a id="deepseek-aidsh-tool-evolink-image"></a>
+
+## `@deepseek-ai/dsh-tool-evolink-image`
+
+Requires: `tools`
+
+```ts config-catalog
+/** Deployment configuration for EvoLink image generation. */
+export interface Config {
+  /** Environment variable holding the EvoLink API key. Defaults to `EVOLINK_API_KEY`. */
+  apiKeyEnv?: string
+  /** EvoLink API root. Defaults to `https://api.evolink.ai/v1`. */
+  baseUrl?: string
+  /** EvoLink image model identifier. Defaults to `z-image-turbo`. */
+  model?: string
+  /** Delay between task-status requests in milliseconds. Defaults to 5000. */
+  pollIntervalMs?: number
+  /** Maximum task-status requests after task creation. Defaults to 60. */
+  maxPollAttempts?: number
+  /** Per-request HTTP timeout in milliseconds. Defaults to 30000. */
+  requestTimeoutMs?: number
+}
+```
+
+Source: [`packages/web/tool-evolink-image/src/index.ts:25`](../packages/web/tool-evolink-image/src/index.ts)
+
 <a id="deepseek-aidsh-tool-fs"></a>
 
 ## `@deepseek-ai/dsh-tool-fs`
@@ -3122,6 +3148,30 @@ export interface Config {
 ```
 
 Source: [`packages/goal/tool-goal/src/index.ts:25`](../packages/goal/tool-goal/src/index.ts)
+
+<a id="deepseek-aidsh-tool-hyperframes"></a>
+
+## `@deepseek-ai/dsh-tool-hyperframes`
+
+Requires: `tools`
+
+```ts config-catalog
+/** Deployment configuration for the HyperFrames tool wrappers. */
+export interface Config {
+  /** Executable that launches the HyperFrames CLI. Defaults to `npx`. */
+  command?: string
+  /** Arguments inserted between `command` and the subcommand. Defaults to `["--yes", "hyperframes"]`. */
+  commandArgs?: string[]
+  /** `video_lint` timeout in milliseconds. Defaults to 120000. */
+  lintTimeoutMs?: number
+  /** `video_snapshot` timeout in milliseconds. Defaults to 300000. */
+  snapshotTimeoutMs?: number
+  /** `video_render` timeout in milliseconds. Defaults to 1800000. */
+  renderTimeoutMs?: number
+}
+```
+
+Source: [`packages/web/tool-hyperframes/src/index.ts:34`](../packages/web/tool-hyperframes/src/index.ts)
 
 <a id="deepseek-aidsh-tool-jobs"></a>
 
@@ -3415,6 +3465,30 @@ export interface Config {
 ```
 
 Source: [`packages/todo/tool-todo/src/index.ts:29`](../packages/todo/tool-todo/src/index.ts)
+
+<a id="deepseek-aidsh-tool-tts"></a>
+
+## `@deepseek-ai/dsh-tool-tts`
+
+Requires: `tools`
+
+```ts config-catalog
+/** Deployment configuration for Qwen text-to-speech. */
+export interface Config {
+  /** Environment variable holding the DashScope API key. Defaults to `DASHSCOPE_API_KEY`. */
+  apiKeyEnv?: string
+  /** DashScope API root. Defaults to `https://dashscope.aliyuncs.com/api/v1`. */
+  baseUrl?: string
+  /** Speech-synthesis model identifier. Defaults to `qwen3-tts-flash`. */
+  model?: string
+  /** Voice used when a call omits `voice`. Defaults to `Cherry`. */
+  voice?: string
+  /** Per-request HTTP timeout in milliseconds. Defaults to 30000. */
+  requestTimeoutMs?: number
+}
+```
+
+Source: [`packages/web/tool-tts/src/index.ts:24`](../packages/web/tool-tts/src/index.ts)
 
 <a id="deepseek-aidsh-tool-web"></a>
 

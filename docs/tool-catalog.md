@@ -44,6 +44,9 @@ This table connects model-visible tool names to the plugin package and service s
 | `@deepseek-ai/dsh-tool-todo` | `todo_write` | `ctx.tools`, `owning Agent session` | `tool/call`, `todo/write`, `tool/result` | - | todo_write is session-owned state; UIs render the latest todo/write event as a checklist. `allowParallelInProgress` is required with no default, so the catalog states its choice: `true`, whose description invites several `in_progress` items. A deployment choosing `false` receives the same tool with a description asking for exactly one active task. |
 | `@deepseek-ai/dsh-tool-workflow` | `workflow` | `ctx.tools`, `ctx.workflowEngine`, `ctx.systemPrompt`, `a calling Agent (exec.agent parents the script children)` | `tool/call`, `tool/result` | - | - |
 | `@deepseek-ai/dsh-tool-web` | `web_fetch`, `web_search` | `ctx.tools`, `ctx.web`, `ctx.systemPrompt` | `tool/call`, `tool/result` | - | web_search and web_fetch keep provider selection behind ctx.web so model-visible schemas stay stable across backend swaps. |
+| `@deepseek-ai/dsh-tool-evolink-image` | `generate_image` | `ctx.tools`, `the launch environment API key at call time` | `tool/call`, `tool/result` | - | The shared base bundle ships this optional tool disabled; enable it through Plugins and set the API-key environment variable it reads. |
+| `@deepseek-ai/dsh-tool-tts` | `text_to_speech` | `ctx.tools`, `the launch environment API key at call time` | `tool/call`, `tool/result` | - | The shared base bundle ships this optional tool disabled; enable it through Plugins and set the API-key environment variable it reads. |
+| `@deepseek-ai/dsh-tool-hyperframes` | `video_lint`, `video_render`, `video_snapshot` | `ctx.tools`, `the HyperFrames CLI at call time` | `tool/call`, `tool/result` | - | video_lint, video_snapshot, and video_render wrap the HyperFrames CLI; the shared base bundle ships this optional tool package disabled, and video_render requires FFmpeg on PATH. |
 
 <a id="deepseek-aidsh-plugin-manager"></a>
 
@@ -2488,3 +2491,167 @@ Search the web for current information. Provide 1–4 queries in the required qu
 Source: [`packages/web/tool-web/src/index.ts`](../packages/web/tool-web/src/index.ts)
 
 web_search and web_fetch keep provider selection behind ctx.web so model-visible schemas stay stable across backend swaps.
+
+<a id="deepseek-aidsh-tool-evolink-image"></a>
+
+## `@deepseek-ai/dsh-tool-evolink-image`
+
+### `generate_image`
+
+Generate an image with EvoLink Z-Image Turbo. The call creates an asynchronous task, then waits for its completed image URLs.
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "prompt": {
+      "type": "string",
+      "description": "Detailed text prompt for the image."
+    },
+    "size": {
+      "type": "string",
+      "description": "Aspect ratio or pixel dimensions, for example `1:1`, `16:9`, or `1024x1024`."
+    },
+    "seed": {
+      "type": "integer",
+      "description": "Optional deterministic seed."
+    },
+    "nsfw_check": {
+      "type": "boolean",
+      "description": "Enable EvoLink stricter NSFW filtering. Defaults to false."
+    }
+  },
+  "required": [
+    "prompt"
+  ]
+}
+```
+
+Source: [`packages/web/tool-evolink-image/src/index.ts`](../packages/web/tool-evolink-image/src/index.ts)
+
+The shared base bundle ships this optional tool disabled; enable it through Plugins and set the API-key environment variable it reads.
+
+<a id="deepseek-aidsh-tool-tts"></a>
+
+## `@deepseek-ai/dsh-tool-tts`
+
+### `text_to_speech`
+
+Synthesize speech from text with Qwen3-TTS and return a downloadable audio URL. Optionally choose a voice and the spoken language.
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "text": {
+      "type": "string",
+      "description": "The text to speak. Keep each call under about 600 characters; split longer text into multiple calls."
+    },
+    "voice": {
+      "type": "string",
+      "description": "Voice identifier. Defaults to `Cherry`. Common voices: Cherry, Serena, Ethan, Chelsie, Dylan, Sunny, Jada, Li, Marcus, Roy, Peter, Rocky."
+    },
+    "language_type": {
+      "type": "string",
+      "description": "Spoken language hint. Defaults to Auto. One of: Chinese, English, German, Italian, Portuguese, Spanish, Japanese, Korean, French, Russian."
+    }
+  },
+  "required": [
+    "text"
+  ]
+}
+```
+
+Source: [`packages/web/tool-tts/src/index.ts`](../packages/web/tool-tts/src/index.ts)
+
+The shared base bundle ships this optional tool disabled; enable it through Plugins and set the API-key environment variable it reads.
+
+<a id="deepseek-aidsh-tool-hyperframes"></a>
+
+## `@deepseek-ai/dsh-tool-hyperframes`
+
+### `video_lint`
+
+Run the HyperFrames static contract check on a project and report syntax and structure findings without opening a browser.
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "projectPath": {
+      "type": "string",
+      "description": "Path to a HyperFrames project directory (must contain index.html)."
+    }
+  },
+  "required": [
+    "projectPath"
+  ]
+}
+```
+
+Source: [`packages/web/tool-hyperframes/src/index.ts`](../packages/web/tool-hyperframes/src/index.ts)
+
+### `video_render`
+
+Render a HyperFrames project to an MP4 file and return the output path. Requires FFmpeg on PATH.
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "projectPath": {
+      "type": "string",
+      "description": "Path to a HyperFrames project directory (must contain index.html)."
+    },
+    "quality": {
+      "type": "string",
+      "description": "Render quality preset: draft for fast iteration, looks for review, delivery for final output. Defaults to looks.",
+      "enum": [
+        "draft",
+        "looks",
+        "delivery"
+      ]
+    },
+    "output": {
+      "type": "string",
+      "description": "Output MP4 path. Defaults to <project>/renders/<project>-<timestamp>.mp4."
+    }
+  },
+  "required": [
+    "projectPath"
+  ]
+}
+```
+
+Source: [`packages/web/tool-hyperframes/src/index.ts`](../packages/web/tool-hyperframes/src/index.ts)
+
+### `video_snapshot`
+
+Capture frames from a HyperFrames project at specific timeline times and combine them into one grid image, three frames per row.
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "projectPath": {
+      "type": "string",
+      "description": "Path to a HyperFrames project directory (must contain index.html)."
+    },
+    "times": {
+      "type": "array",
+      "description": "Capture times in seconds, in the order they should appear in the grid. Between 1 and 9 entries; each frame is rendered exactly at its time.",
+      "items": {
+        "type": "number"
+      }
+    }
+  },
+  "required": [
+    "projectPath",
+    "times"
+  ]
+}
+```
+
+Source: [`packages/web/tool-hyperframes/src/index.ts`](../packages/web/tool-hyperframes/src/index.ts)
+
+video_lint, video_snapshot, and video_render wrap the HyperFrames CLI; the shared base bundle ships this optional tool package disabled, and video_render requires FFmpeg on PATH.

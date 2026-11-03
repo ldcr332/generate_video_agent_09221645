@@ -71,6 +71,9 @@ import McpResources from '@deepseek-ai/dsh-mcp-resources'
 import * as ToolSubagent from '@deepseek-ai/dsh-tool-subagent'
 import { registerListSubagentModels } from '../packages/subagent/tool-subagent/src/list-models.ts'
 import * as ToolWeb from '@deepseek-ai/dsh-tool-web'
+import * as ToolEvolinkImage from '@deepseek-ai/dsh-tool-evolink-image'
+import * as ToolHyperframes from '@deepseek-ai/dsh-tool-hyperframes'
+import * as ToolTts from '@deepseek-ai/dsh-tool-tts'
 import WorkflowEngine from '@deepseek-ai/dsh-workflow'
 import type { WorkflowRun, WorkflowStartRequest } from '@deepseek-ai/dsh-workflow'
 import * as ToolRalph from '@deepseek-ai/dsh-tool-ralph'
@@ -653,6 +656,42 @@ const TOOL_PACKAGES: ToolPackage[] = [
     },
     note:
       'web_search and web_fetch keep provider selection behind ctx.web so model-visible schemas stay stable across backend swaps.',
+  },
+  {
+    pkg: '@deepseek-ai/dsh-tool-evolink-image',
+    dir: 'tool-evolink-image',
+    source: 'packages/web/tool-evolink-image/src/index.ts',
+    requires: ['ctx.tools', 'the launch environment API key at call time'],
+    writes: ['tool/call', 'tool/result'],
+    async mount(ctx) {
+      await ctx.plugin(ToolEvolinkImage)
+    },
+    note:
+      'The shared base bundle ships this optional tool disabled; enable it through Plugins and set the API-key environment variable it reads.',
+  },
+  {
+    pkg: '@deepseek-ai/dsh-tool-tts',
+    dir: 'tool-tts',
+    source: 'packages/web/tool-tts/src/index.ts',
+    requires: ['ctx.tools', 'the launch environment API key at call time'],
+    writes: ['tool/call', 'tool/result'],
+    async mount(ctx) {
+      await ctx.plugin(ToolTts)
+    },
+    note:
+      'The shared base bundle ships this optional tool disabled; enable it through Plugins and set the API-key environment variable it reads.',
+  },
+  {
+    pkg: '@deepseek-ai/dsh-tool-hyperframes',
+    dir: 'tool-hyperframes',
+    source: 'packages/web/tool-hyperframes/src/index.ts',
+    requires: ['ctx.tools', 'the HyperFrames CLI at call time'],
+    writes: ['tool/call', 'tool/result'],
+    async mount(ctx) {
+      await ctx.plugin(ToolHyperframes)
+    },
+    note:
+      'video_lint, video_snapshot, and video_render wrap the HyperFrames CLI; the shared base bundle ships this optional tool package disabled, and video_render requires FFmpeg on PATH.',
   },
 ]
 

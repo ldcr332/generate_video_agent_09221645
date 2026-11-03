@@ -1,0 +1,31 @@
+# The dsh-video-app bundle patch: the video-production surface over dsh-base and
+# dsh-web-app. Applied after both, so it can enable the optional media Agent
+# Tools the base declares disabled and add the browser video studio to the client
+# roster the web layer already mounted.
+#
+# The `video` profile is base + web-app + video-app. Nothing here is video-only
+# host machinery: the studio UI and the video-specific media tools are the whole
+# contribution, and each is a row the shared layers already know how to load.
+# `generate_image` (tool-evolink-image) is left to dsh-web-app, which already
+# enables it, so the video profile inherits it without a second owner.
+
+# ── browser video studio ──────────────────────────────────────────────────────
+# A dsh.client row the modules node half scans into window.__DSH_BOOT__ and the
+# browser half mounts. It owns the mode toggle, the full-screen studio overlay
+# (project list, preview panel, subtitle/picture/audio timeline, agent chat),
+# and reads the video project's script.json over the workspace-files Remote.
+- insert:
+    - id: ui-video
+      name: '@deepseek-ai/dsh-client-ui-video'
+
+# ── video-specific media Agent Tools ──────────────────────────────────────────
+# The base ships these two rows disabled (listed in Settings, off); this bundle
+# is the overlay that turns them on for the video profile, exactly as the preset
+# expects: `text_to_speech` for shot narration, and the HyperFrames
+# `video_lint` / `video_snapshot` / `video_render` trio. Each is an id-targeted
+# override of the base row, so it restates only the flag it flips.
+- id: tool-tts
+  disabled: false
+
+- id: tool-hyperframes
+  disabled: false

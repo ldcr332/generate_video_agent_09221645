@@ -22,7 +22,7 @@ kind: "package-group"
 <a id="packages"></a>
 ## 包
 
-七个包分别承担 web 角色；完整词汇与约定以子系统参考文档为准。
+九个包分别承担 web 角色；完整词汇与约定以子系统参考文档为准。
 
 | 包 | 职责 | ctx 键 |
 |---|---|---|
@@ -33,6 +33,8 @@ kind: "package-group"
 | [`web-fetch-http/`](web-fetch-http/README.zh.md) | 匿名抓取公共 HTTP(S) 页面 | 注册到 `ctx.web` |
 | [`tool-web/`](tool-web/README.zh.md) | 向模型公开 `web_search` 与 `web_fetch` | 注册到 `ctx.tools` |
 | [`tool-evolink-image/`](tool-evolink-image/README.zh.md) | 创建并轮询 EvoLink Z-Image Turbo 图片任务 | 注册到 `ctx.tools` |
+| [`tool-hyperframes/`](tool-hyperframes/README.zh.md) | 包装 HyperFrames CLI，提供视频 lint、截图九宫格与 MP4 渲染 | 注册到 `ctx.tools` |
+| [`tool-tts/`](tool-tts/README.zh.md) | 通过 Qwen3-TTS 将文字合成为语音 | 注册到 `ctx.tools` |
 
 -----
 

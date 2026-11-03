@@ -1,0 +1,12 @@
+/* Video-studio entry control: an icon-leading capsule that fits both the
+   wide sidebar foot and the narrow rail. */
+
+.toggle {
+  min-width: 0;
+}
+
+.label {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

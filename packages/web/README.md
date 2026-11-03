@@ -22,7 +22,7 @@ The `web/` packages let models search the public web and fetch HTTP(S) pages thr
 <a id="packages"></a>
 ## Packages
 
-Seven packages play the web roles; the subsystem reference owns the exhaustive vocabulary and contracts.
+Nine packages play the web roles; the subsystem reference owns the exhaustive vocabulary and contracts.
 
 | Package | Role | ctx key |
 |---|---|---|
@@ -33,6 +33,8 @@ Seven packages play the web roles; the subsystem reference owns the exhaustive v
 | [`web-fetch-http/`](web-fetch-http/README.md) | Fetches public HTTP(S) pages anonymously | registers on `ctx.web` |
 | [`tool-web/`](tool-web/README.md) | Exposes `web_search` and `web_fetch` to the model | registers on `ctx.tools` |
 | [`tool-evolink-image/`](tool-evolink-image/README.md) | Creates and polls EvoLink Z-Image Turbo image tasks | registers on `ctx.tools` |
+| [`tool-hyperframes/`](tool-hyperframes/README.md) | Wraps the HyperFrames CLI for video lint, snapshot grids, and MP4 renders | registers on `ctx.tools` |
+| [`tool-tts/`](tool-tts/README.md) | Synthesizes speech from text through Qwen3-TTS | registers on `ctx.tools` |
 
 -----
 

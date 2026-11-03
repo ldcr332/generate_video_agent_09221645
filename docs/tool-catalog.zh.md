@@ -48,6 +48,9 @@
 | `@deepseek-ai/dsh-tool-todo` | `todo_write` | `ctx.tools`、`owning Agent session` | `tool/call`、`todo/write`、`tool/result` | - | todo_write 是会话所有的状态；UI 将最新的 todo/write 事件渲染为检查清单。`allowParallelInProgress` 是没有默认值的必填项，因此本目录明确选择 `true`，对应描述允许同时存在多个 `in_progress` 项。选择 `false` 的部署会获得同一工具，但描述会要求只能有 1 个活动任务。 |
 | `@deepseek-ai/dsh-tool-workflow` | `workflow` | `ctx.tools`、`ctx.workflowEngine`、`ctx.systemPrompt`、`a calling Agent (exec.agent parents the script children)` | `tool/call`、`tool/result` | - | - |
 | `@deepseek-ai/dsh-tool-web` | `web_fetch`、`web_search` | `ctx.tools`、`ctx.web`、`ctx.systemPrompt` | `tool/call`、`tool/result` | - | web_search 和 web_fetch 将提供方选择置于 ctx.web 之后，使模型可见 schema 在更换后端时保持稳定。 |
+| `@deepseek-ai/dsh-tool-evolink-image` | `generate_image` | `ctx.tools`、`the launch environment API key at call time` | `tool/call`、`tool/result` | - | 共享基础 bundle 默认关闭此可选工具；通过插件管理器启用，并设置其读取的 API 密钥环境变量。 |
+| `@deepseek-ai/dsh-tool-tts` | `text_to_speech` | `ctx.tools`、`the launch environment API key at call time` | `tool/call`、`tool/result` | - | 共享基础 bundle 默认关闭此可选工具；通过插件管理器启用，并设置其读取的 API 密钥环境变量。 |
+| `@deepseek-ai/dsh-tool-hyperframes` | `video_lint`、`video_render`、`video_snapshot` | `ctx.tools`、`the HyperFrames CLI at call time` | `tool/call`、`tool/result` | - | video_lint、video_snapshot、video_render 包装 HyperFrames CLI；共享基础 bundle 默认关闭此可选工具包，且 video_render 要求 PATH 上有 FFmpeg。 |
 
 <a id="deepseek-aidsh-plugin-manager"></a>
 
@@ -2496,3 +2499,167 @@ todo_write 是会话所有的状态；UI 将最新的 todo/write 事件渲染为
 来源：[`packages/web/tool-web/src/index.ts`](../packages/web/tool-web/src/index.ts)
 
 web_search 和 web_fetch 将提供方选择置于 ctx.web 之后，使模型可见 schema 在更换后端时保持稳定。
+
+<a id="deepseek-aidsh-tool-evolink-image"></a>
+
+## `@deepseek-ai/dsh-tool-evolink-image`
+
+### `generate_image`
+
+使用 EvoLink Z-Image Turbo 生成图片。调用会创建一个异步任务，然后等待其完成的图片 URL。
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "prompt": {
+      "type": "string",
+      "description": "Detailed text prompt for the image."
+    },
+    "size": {
+      "type": "string",
+      "description": "Aspect ratio or pixel dimensions, for example `1:1`, `16:9`, or `1024x1024`."
+    },
+    "seed": {
+      "type": "integer",
+      "description": "Optional deterministic seed."
+    },
+    "nsfw_check": {
+      "type": "boolean",
+      "description": "Enable EvoLink stricter NSFW filtering. Defaults to false."
+    }
+  },
+  "required": [
+    "prompt"
+  ]
+}
+```
+
+来源：[`packages/web/tool-evolink-image/src/index.ts`](../packages/web/tool-evolink-image/src/index.ts)
+
+共享基础 bundle 默认关闭此可选工具；通过插件管理器启用，并设置其读取的 API 密钥环境变量。
+
+<a id="deepseek-aidsh-tool-tts"></a>
+
+## `@deepseek-ai/dsh-tool-tts`
+
+### `text_to_speech`
+
+使用 Qwen3-TTS 将文字合成为语音，并返回可下载的音频 URL。可选地指定音色与朗读语言。
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "text": {
+      "type": "string",
+      "description": "The text to speak. Keep each call under about 600 characters; split longer text into multiple calls."
+    },
+    "voice": {
+      "type": "string",
+      "description": "Voice identifier. Defaults to `Cherry`. Common voices: Cherry, Serena, Ethan, Chelsie, Dylan, Sunny, Jada, Li, Marcus, Roy, Peter, Rocky."
+    },
+    "language_type": {
+      "type": "string",
+      "description": "Spoken language hint. Defaults to Auto. One of: Chinese, English, German, Italian, Portuguese, Spanish, Japanese, Korean, French, Russian."
+    }
+  },
+  "required": [
+    "text"
+  ]
+}
+```
+
+来源：[`packages/web/tool-tts/src/index.ts`](../packages/web/tool-tts/src/index.ts)
+
+共享基础 bundle 默认关闭此可选工具；通过插件管理器启用，并设置其读取的 API 密钥环境变量。
+
+<a id="deepseek-aidsh-tool-hyperframes"></a>
+
+## `@deepseek-ai/dsh-tool-hyperframes`
+
+### `video_lint`
+
+对项目运行 HyperFrames 静态合约检查，报告语法与结构问题，无需打开浏览器。
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "projectPath": {
+      "type": "string",
+      "description": "Path to a HyperFrames project directory (must contain index.html)."
+    }
+  },
+  "required": [
+    "projectPath"
+  ]
+}
+```
+
+来源：[`packages/web/tool-hyperframes/src/index.ts`](../packages/web/tool-hyperframes/src/index.ts)
+
+### `video_render`
+
+将 HyperFrames 项目渲染为 MP4 文件并返回输出路径。要求 PATH 上有 FFmpeg。
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "projectPath": {
+      "type": "string",
+      "description": "Path to a HyperFrames project directory (must contain index.html)."
+    },
+    "quality": {
+      "type": "string",
+      "description": "Render quality preset: draft for fast iteration, looks for review, delivery for final output. Defaults to looks.",
+      "enum": [
+        "draft",
+        "looks",
+        "delivery"
+      ]
+    },
+    "output": {
+      "type": "string",
+      "description": "Output MP4 path. Defaults to <project>/renders/<project>-<timestamp>.mp4."
+    }
+  },
+  "required": [
+    "projectPath"
+  ]
+}
+```
+
+来源：[`packages/web/tool-hyperframes/src/index.ts`](../packages/web/tool-hyperframes/src/index.ts)
+
+### `video_snapshot`
+
+在指定的时间线时间点从 HyperFrames 项目截取帧，并拼合成每行 3 张的九宫格图片。
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "projectPath": {
+      "type": "string",
+      "description": "Path to a HyperFrames project directory (must contain index.html)."
+    },
+    "times": {
+      "type": "array",
+      "description": "Capture times in seconds, in the order they should appear in the grid. Between 1 and 9 entries; each frame is rendered exactly at its time.",
+      "items": {
+        "type": "number"
+      }
+    }
+  },
+  "required": [
+    "projectPath",
+    "times"
+  ]
+}
+```
+
+来源：[`packages/web/tool-hyperframes/src/index.ts`](../packages/web/tool-hyperframes/src/index.ts)
+
+video_lint、video_snapshot、video_render 包装 HyperFrames CLI；共享基础 bundle 默认关闭此可选工具包，且 video_render 要求 PATH 上有 FFmpeg。

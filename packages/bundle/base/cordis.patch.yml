@@ -481,6 +481,18 @@
       name: '@deepseek-ai/dsh-tool-evolink-image'
       disabled: true
 
+    # This optional Agent Tool reads DASHSCOPE_API_KEY from the launch environment.
+    # It remains listed in Settings while disabled and is enabled through Plugins.
+    - id: tool-tts
+      name: '@deepseek-ai/dsh-tool-tts'
+      disabled: true
+
+    # These optional Agent Tools wrap the HyperFrames CLI (npx) for video projects.
+    # The row remains listed in Settings while disabled and is enabled through Plugins.
+    - id: tool-hyperframes
+      name: '@deepseek-ai/dsh-tool-hyperframes'
+      disabled: true
+
     - id: mcp-resources
       name: '@deepseek-ai/dsh-mcp-resources'
 
